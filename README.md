@@ -282,7 +282,7 @@ MIT
 ---
 
 ## 👥 Contributors
-Your Name
+Your Name :Satyam Yadav (@satyam2747)
 
 ---
 

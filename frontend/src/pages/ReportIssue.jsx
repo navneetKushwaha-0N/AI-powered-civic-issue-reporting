@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { issueAPI } from '../services/api';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import Card from '../components/Card';
 import { MapPin, Image as ImageIcon } from 'lucide-react';
 
 const categories = [
@@ -26,6 +22,8 @@ const ReportIssue = () => {
   const [locationLoading, setLocationLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
+
   const [formData, setFormData] = useState({
     description: '',
     category: '',
@@ -34,213 +32,190 @@ const ReportIssue = () => {
     address: '',
     image: null
   });
-  const [imagePreview, setImagePreview] = useState(null);
 
   const handleGetLocation = () => {
     setLocationLoading(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setFormData({
-            ...formData,
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-          setLocationLoading(false);
-        },
-        (error) => {
-          setError('Unable to get location. Please enable location services.');
-          setLocationLoading(false);
-        }
-      );
-    } else {
-      setError('Geolocation is not supported by your browser');
-      setLocationLoading(false);
-    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setFormData({
+          ...formData,
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        });
+        setLocationLoading(false);
+      },
+      () => {
+        setError('Enable location access');
+        setLocationLoading(false);
+      }
+    );
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        setError('Image size should be less than 10MB');
-        return;
-      }
-      setFormData({ ...formData, image: file });
-      setImagePreview(URL.createObjectURL(file));
-    }
+    if (!file) return;
+    setFormData({ ...formData, image: file });
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setSuccess('');
 
     if (!formData.image) {
-      setError('Please upload an image');
+      setError('Upload image');
       setLoading(false);
       return;
     }
 
-    if (!formData.latitude || !formData.longitude) {
-      setError('Please detect your location');
+    if (!formData.latitude) {
+      setError('Detect location');
       setLoading(false);
       return;
     }
 
-    const submitData = new FormData();
-    submitData.append('image', formData.image);
-    submitData.append('description', formData.description);
-    submitData.append('latitude', formData.latitude);
-    submitData.append('longitude', formData.longitude);
-    if (formData.category) submitData.append('category', formData.category);
-    if (formData.address) submitData.append('address', formData.address);
+    const data = new FormData();
+    Object.entries(formData).forEach(([k, v]) => v && data.append(k, v));
 
     try {
-      const response = await issueAPI.createIssue(submitData);
-      
-      if (response.data.duplicate) {
-        setSuccess(`Similar issue found! Your support has been added (Issue ID: ${response.data.data.existingIssueId})`);
-        setTimeout(() => {
-          navigate(`/issue/${response.data.data.existingIssueId}`);
-        }, 2000);
-      } else {
-        setSuccess('Issue reported successfully!');
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || 'Failed to report issue');
+      await issueAPI.createIssue(data);
+      setSuccess('Issue submitted');
+      setTimeout(() => navigate('/dashboard'), 1500);
+    } catch {
+      setError('Submission failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Report Civic Issue</h1>
+    <div className="min-h-screen bg-[#0b1220] relative overflow-hidden px-4 py-12">
 
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-          {error}
+      {/* balanced premium background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(99,102,241,0.25),transparent_40%),radial-gradient(circle_at_85%_80%,rgba(14,165,233,0.25),transparent_40%),linear-gradient(to_bottom,#0b1220,#0f172a)]"></div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
+
+        {/* title */}
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-semibold text-white tracking-tight">
+            Report an Issue
+          </h1>
+          <p className="text-gray-400 mt-2 text-sm">
+            Help improve your city by reporting problems
+          </p>
         </div>
-      )}
 
-      {success && (
-        <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg mb-6">
-          {success}
-        </div>
-      )}
+        {error && (
+          <div className="mb-6 text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-2xl">
+            {error}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <Card className="mb-6">
-          <h3 className="text-lg font-semibold mb-4">Issue Details</h3>
+        {success && (
+          <div className="mb-6 text-green-400 bg-green-500/10 border border-green-500/20 px-4 py-3 rounded-2xl">
+            {success}
+          </div>
+        )}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Upload Image *
-            </label>
-            <div className="flex items-center space-x-4">
-              <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition flex items-center space-x-2">
-                <ImageIcon className="h-5 w-5" />
-                <span>Choose Image</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                  required
-                />
+        <form onSubmit={handleSubmit} className="space-y-8">
+
+          {/* main card */}
+          <div className="p-8 rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+
+            {/* image */}
+            <div className="mb-6">
+              <label className="text-sm text-gray-300">Upload Image</label>
+
+              <label className="mt-3 flex flex-col items-center justify-center gap-3 cursor-pointer h-44 rounded-2xl border border-dashed border-white/20 hover:border-white/40 transition bg-white/5">
+                <ImageIcon className="h-6 w-6 text-gray-400" />
+                <span className="text-sm text-gray-400">Click to upload</span>
+                <input type="file" className="hidden" onChange={handleImageChange} />
               </label>
+
+              {imagePreview && (
+                <img src={imagePreview} className="mt-4 rounded-xl max-h-72 object-cover" />
+              )}
             </div>
-            {imagePreview && (
-              <div className="mt-4">
-                <img src={imagePreview} alt="Preview" className="max-w-xs rounded-lg shadow-md" />
-              </div>
-            )}
-          </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category (Optional - AI will predict)
-            </label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="input-field"
-            >
-              <option value="">Let AI predict</option>
-              {categories.map((cat) => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.label}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* fields */}
+            <div className="grid md:grid-cols-2 gap-4">
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description *
-            </label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-300"
+              >
+                <option value="">AI Category</option>
+                {categories.map(c => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+
+              <input
+                placeholder="Address (optional)"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400"
+              />
+
+            </div>
+
             <textarea
-              name="description"
+              rows="4"
+              placeholder="Describe the issue clearly..."
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              required
-              rows="4"
-              className="input-field"
-              placeholder="Describe the issue in detail"
+              className="mt-4 w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400"
             />
+
           </div>
 
-          <Input
-            label="Address (Optional)"
-            name="address"
-            value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            placeholder="Street address or landmark"
-          />
-        </Card>
+          {/* location */}
+          <div className="p-6 rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/10 flex items-center justify-between">
 
-        <Card className="mb-6">
-          <h3 className="text-lg font-semibold mb-4">Location</h3>
-
-          <Button
-            type="button"
-            onClick={handleGetLocation}
-            disabled={locationLoading}
-            variant="outline"
-            className="mb-4"
-          >
-            <MapPin className="h-5 w-5 mr-2" />
-            {locationLoading ? 'Detecting...' : 'Auto-Detect My Location'}
-          </Button>
-
-          {formData.latitude && formData.longitude && (
-            <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-green-800">
-                <strong>Location detected:</strong> {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
+            <div>
+              <p className="text-white text-sm">Location</p>
+              <p className="text-gray-500 text-xs">
+                {formData.latitude ? 'Detected successfully' : 'Not detected'}
               </p>
             </div>
-          )}
-        </Card>
 
-        <div className="flex space-x-4">
-          <Button type="submit" disabled={loading} className="flex-1">
-            {loading ? 'Submitting...' : 'Submit Issue'}
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => navigate('/dashboard')}
-          >
-            Cancel
-          </Button>
-        </div>
-      </form>
+            <button
+              type="button"
+              onClick={handleGetLocation}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-md"
+            >
+              <MapPin className="h-4 w-4" />
+              {locationLoading ? 'Detecting...' : 'Detect'}
+            </button>
+
+          </div>
+
+          {/* actions */}
+          <div className="flex gap-4">
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white font-medium shadow-lg hover:opacity-90 transition"
+            >
+              {loading ? 'Submitting...' : 'Submit Issue'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard')}
+              className="px-6 py-3 rounded-xl border border-white/10 text-gray-300 hover:bg-white/5 transition"
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from './Button';
 
-const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
+const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend, devOtp }) => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,15 +22,11 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
   }, [isOpen]);
 
   const handleChange = (index, value) => {
-    // Only allow digits
     if (value && !/^\d$/.test(value)) return;
-
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
     setError('');
-
-    // Auto-focus next input
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -46,14 +42,11 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').slice(0, 6);
     if (!/^\d+$/.test(pastedData)) return;
-
     const newOtp = [...otp];
     for (let i = 0; i < pastedData.length; i++) {
       newOtp[i] = pastedData[i];
     }
     setOtp(newOtp);
-
-    // Focus last filled input or first empty one
     const nextIndex = Math.min(pastedData.length, 5);
     inputRefs.current[nextIndex]?.focus();
   };
@@ -64,10 +57,8 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
       setError('Please enter all 6 digits');
       return;
     }
-
     setLoading(true);
     setError('');
-
     try {
       await onVerify(otpCode);
     } catch (err) {
@@ -81,11 +72,9 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
 
   const handleResend = async () => {
     if (resendCooldown > 0) return;
-
     setLoading(true);
     setError('');
     setOtp(['', '', '', '', '', '']);
-
     try {
       await onResend();
       setResendCooldown(30);
@@ -101,6 +90,7 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 relative">
+
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -149,6 +139,14 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
           ))}
         </div>
 
+        {/* Dev Mode OTP Helper */}
+        {devOtp && (
+          <div className="mb-4 px-3 py-2.5 rounded-lg bg-yellow-50 border border-yellow-200 text-center">
+            <p className="text-xs text-yellow-600 font-medium mb-1">🛠️ Dev Mode — OTP</p>
+            <p className="text-yellow-800 font-bold tracking-[0.3em] text-xl">{devOtp}</p>
+          </div>
+        )}
+
         {/* Error Message */}
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm text-center">
@@ -182,6 +180,7 @@ const OTPModal = ({ isOpen, onClose, phone, onVerify, onResend }) => {
               : 'Resend OTP'}
           </button>
         </div>
+
       </div>
     </div>
   );

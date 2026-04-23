@@ -1,0 +1,227 @@
+[
+  {
+    "id": 1,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_0.jpg",
+    "description": "Dark area due to non-functional lights Please fix urgently",
+    "latitude": 40.00555331504928,
+    "longitude": -75.24724753144483,
+    "category": "Street Light Failure",
+    "timestamp": "2026-02-02T13:35:20.425650"
+  },
+  {
+    "id": 2,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/road_damage_-_pothole_1.jpg",
+    "description": "Large crater in the middle of the road Needs immediate attention",
+    "latitude": 39.967086720110345,
+    "longitude": -75.23198900447319,
+    "category": "Road Damage / Pothole",
+    "timestamp": "2026-01-14T13:35:20.429939"
+  },
+  {
+    "id": 3,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_2.jpg",
+    "description": "Multiple broken lights on Main Street Needs immediate attention",
+    "latitude": 29.6796804256095,
+    "longitude": -95.39058320828003,
+    "category": "Street Light Failure",
+    "timestamp": "2026-02-04T13:35:20.433648"
+  },
+  {
+    "id": 4,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/sewer_overflow_3.jpg",
+    "description": "Open sewer line contaminating area Needs immediate attention",
+    "latitude": 26.731165969298583,
+    "longitude": 83.38182330552289,
+    "category": "Sewer Overflow",
+    "timestamp": "2026-02-02T13:35:20.436688"
+  },
+  {
+    "id": 5,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/water_leakage_4.jpg",
+    "description": "Leaking fire hydrant wasting water Reported by citizen",
+    "latitude": 26.792094619394767,
+    "longitude": 83.33847431345174,
+    "category": "Water Leakage",
+    "timestamp": "2026-01-21T13:35:20.439937"
+  },
+  {
+    "id": 6,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/road_damage_-_pothole_5.jpg",
+    "description": "Deep pothole causing traffic issues Please fix urgently",
+    "latitude": 33.45419508937698,
+    "longitude": -112.07673635405476,
+    "category": "Road Damage / Pothole",
+    "timestamp": "2026-01-28T13:35:20.443701"
+  },
+  {
+    "id": 7,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_6.jpg",
+    "description": "Illegal dumping site with household waste Needs immediate attention",
+    "latitude": 29.513261971138554,
+    "longitude": -98.42591243939658,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-13T13:35:20.447240"
+  },
+  {
+    "id": 8,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_7.jpg",
+    "description": "Large pile of garbage on the roadside Reported by citizen",
+    "latitude": 29.72297528447697,
+    "longitude": -95.30291013991834,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-16T13:35:20.450475"
+  },
+  {
+    "id": 9,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_8.jpg",
+    "description": "Overflowing trash bins near the park",
+    "latitude": 26.745846123645567,
+    "longitude": 83.4803401019626,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-27T13:35:20.453686"
+  },
+  {
+    "id": 10,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_9.jpg",
+    "description": "Overflowing trash bins near the park Needs immediate attention",
+    "latitude": 29.669512498497298,
+    "longitude": -95.44812050007255,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-23T13:35:20.456888"
+  },
+  {
+    "id": 11,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/sewer_overflow_10.jpg",
+    "description": "Open sewer line contaminating area",
+    "latitude": 29.443798451229018,
+    "longitude": -98.45593294360339,
+    "category": "Sewer Overflow",
+    "timestamp": "2026-02-07T13:35:20.460117"
+  },
+  {
+    "id": 12,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_11.jpg",
+    "description": "Scattered litter around the bus stop Reported by citizen",
+    "latitude": 33.388177947456654,
+    "longitude": -112.13528908879853,
+    "category": "Garbage Issue",
+    "timestamp": "2026-02-08T13:35:20.463684"
+  },
+  {
+    "id": 13,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/water_leakage_12.jpg",
+    "description": "Leaking fire hydrant wasting water Reported by citizen",
+    "latitude": 33.40107498896379,
+    "longitude": -111.9986519009215,
+    "category": "Water Leakage",
+    "timestamp": "2026-01-30T13:35:20.466988"
+  },
+  {
+    "id": 14,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_13.jpg",
+    "description": "Overflowing trash bins near the park Needs immediate attention",
+    "latitude": 34.08591759744881,
+    "longitude": -118.25150166289708,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-17T13:35:20.470035"
+  },
+  {
+    "id": 15,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_14.jpg",
+    "description": "Flickering street lamp causing disturbance Please fix urgently",
+    "latitude": 41.78670820636502,
+    "longitude": -87.56000589004833,
+    "category": "Street Light Failure",
+    "timestamp": "2026-01-16T13:35:20.473388"
+  },
+  {
+    "id": 16,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/road_damage_-_pothole_15.jpg",
+    "description": "Cracked road surface near intersection Needs immediate attention",
+    "latitude": 39.86518508130623,
+    "longitude": -75.19248749426485,
+    "category": "Road Damage / Pothole",
+    "timestamp": "2026-01-22T13:35:20.476780"
+  },
+  {
+    "id": 17,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_16.jpg",
+    "description": "Street light not working at night Please fix urgently",
+    "latitude": 41.84786048767858,
+    "longitude": -87.671036881001,
+    "category": "Street Light Failure",
+    "timestamp": "2026-01-20T13:35:20.480248"
+  },
+  {
+    "id": 18,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_17.jpg",
+    "description": "Multiple broken lights on Main Street",
+    "latitude": 29.40407739887768,
+    "longitude": -98.42155072929361,
+    "category": "Street Light Failure",
+    "timestamp": "2026-02-08T13:35:20.483558"
+  },
+  {
+    "id": 19,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_18.jpg",
+    "description": "Multiple broken lights on Main Street Please fix urgently",
+    "latitude": 29.38217735553365,
+    "longitude": -98.48095877965864,
+    "category": "Street Light Failure",
+    "timestamp": "2026-01-20T13:35:20.486972"
+  },
+  {
+    "id": 20,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_19.jpg",
+    "description": "Dark area due to non-functional lights",
+    "latitude": 41.87222205925469,
+    "longitude": -87.57169900432713,
+    "category": "Street Light Failure",
+    "timestamp": "2026-02-10T13:35:20.490340"
+  },
+  {
+    "id": 21,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_20.jpg",
+    "description": "Multiple broken lights on Main Street Reported by citizen",
+    "latitude": 40.04194544521177,
+    "longitude": -75.11481701939495,
+    "category": "Street Light Failure",
+    "timestamp": "2026-01-29T13:35:20.493672"
+  },
+  {
+    "id": 22,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/street_light_failure_21.jpg",
+    "description": "Multiple broken lights on Main Street Please fix urgently",
+    "latitude": 26.769019657323103,
+    "longitude": 83.5055050606556,
+    "category": "Street Light Failure",
+    "timestamp": "2026-02-11T13:35:20.496985"
+  },
+  {
+    "id": 23,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/water_leakage_22.jpg",
+    "description": "Continuous water leak from underground pipe Reported by citizen",
+    "latitude": 29.360616684653905,
+    "longitude": -98.46655857932035,
+    "category": "Water Leakage",
+    "timestamp": "2026-01-24T13:35:20.500086"
+  },
+  {
+    "id": 24,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_23.jpg",
+    "description": "Overflowing trash bins near the park Please fix urgently",
+    "latitude": 40.70774325516959,
+    "longitude": -73.98975069897057,
+    "category": "Garbage Issue",
+    "timestamp": "2026-02-05T13:35:20.503373"
+  },
+  {
+    "id": 25,
+    "imageURL": "file:///Users/mollenmist/Desktop/civic-issue-system/ml-service/data/images/garbage_issue_24.jpg",
+    "description": "Large pile of garbage on the roadside Needs immediate attention",
+    "latitude": 33.52501103197485,
+    "longitude": -111.99548445434564,
+    "category": "Garbage Issue",
+    "timestamp": "2026-01-18T13:35:20.506606"
+  }
+]

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { issueAPI } from '../../services/api';
 import Card from '../../components/Card';
 import Badge from '../../components/Badge';
+import { Eye } from 'lucide-react';
 
 const AllIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -10,6 +11,7 @@ const AllIssues = () => {
   const [statusFilter, setStatusFilter] = useState('');
   const [assigning, setAssigning] = useState({});
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -60,11 +62,16 @@ const AllIssues = () => {
       <Card>
         <div className="flex items-center space-x-2 p-4 border-b border-gray-100">
           {['', 'pending', 'processing', 'resolved'].map(s => (
-            <button key={s || 'all'} onClick={() => { setStatusFilter(s); setLoading(true); fetchIssues(s); }} className={`px-3 py-1 rounded-md text-sm ${statusFilter===s? 'bg-primary-600 text-white':'bg-gray-100 text-gray-700'}`}>
-              {s ? s.charAt(0).toUpperCase()+s.slice(1) : 'All'}
+            <button
+              key={s || 'all'}
+              onClick={() => { setStatusFilter(s); setLoading(true); fetchIssues(s); }}
+              className={`px-3 py-1 rounded-md text-sm ${statusFilter === s ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+            >
+              {s ? s.charAt(0).toUpperCase() + s.slice(1) : 'All'}
             </button>
           ))}
         </div>
+
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -76,47 +83,85 @@ const AllIssues = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Support</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned To</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
               </tr>
             </thead>
+
             <tbody className="bg-white divide-y divide-gray-200">
-              {issues.map((issue) => (
-                <tr key={issue._id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {issue._id.slice(-6)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <select value={issue.category} onChange={(e)=>changeCategory(issue._id, e.target.value)} className="border border-gray-300 rounded-md p-1 bg-white text-sm">
-                      {['pothole','streetlight','garbage','drainage','water_supply','road_damage','traffic_signal','illegal_parking','graffiti','other','Garbage Issue','Road Damage / Pothole','Street Light Failure','Water Leakage','Sewer Overflow','Other'].map(c=> (
-                        <option key={c} value={c}>{c.replace('_',' ')}</option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {issue.reporterId?.name || 'Unknown User'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <select value={issue.status} onChange={(e)=>changeStatus(issue._id, e.target.value)} className="border border-gray-300 rounded-md p-1 bg-white text-sm">
-                      <option value="pending">pending</option>
-                      <option value="processing">processing</option>
-                      <option value="resolved">resolved</option>
-                      <option value="rejected">rejected</option>
-                    </select>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {issue.supportCount}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <div className="flex items-center space-x-2">
-                      <input defaultValue={issue.assignedTo || ''} onBlur={(e)=>{ if(e.target.value && e.target.value!==issue.assignedTo) assignWorker(issue._id, e.target.value); }} placeholder="Assign worker name" className="border border-gray-300 rounded-md p-1 bg-white" />
-                      {assigning[issue._id] && <span className="text-xs text-gray-400">Saving...</span>}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(issue.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
+              {issues.map(issue => {
+                return (
+                  <tr key={issue._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {issue._id.slice(-6)}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <select
+                        value={issue.category}
+                        onChange={(e) => changeCategory(issue._id, e.target.value)}
+                        className="border border-gray-300 rounded-md p-1 bg-white text-sm"
+                      >
+                        {['pothole','streetlight','garbage','drainage','water_supply','road_damage','traffic_signal','illegal_parking','graffiti','other','Garbage Issue','Road Damage / Pothole','Street Light Failure','Water Leakage','Sewer Overflow','Other'].map(c => (
+                          <option key={c} value={c}>{c.replace('_', ' ')}</option>
+                        ))}
+                      </select>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {issue.reporterId?.name || 'Unknown User'}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <select
+                        value={issue.status}
+                        onChange={(e) => changeStatus(issue._id, e.target.value)}
+                        className="border border-gray-300 rounded-md p-1 bg-white text-sm"
+                      >
+                        <option value="pending">pending</option>
+                        <option value="processing">processing</option>
+                        <option value="resolved">resolved</option>
+                        <option value="rejected">rejected</option>
+                      </select>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {issue.supportCount}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          defaultValue={issue.assignedTo || ''}
+                          onBlur={(e) => {
+                            if (e.target.value && e.target.value !== issue.assignedTo)
+                              assignWorker(issue._id, e.target.value);
+                          }}
+                          placeholder="Assign worker name"
+                          className="border border-gray-300 rounded-md p-1 bg-white text-sm"
+                        />
+                        {assigning[issue._id] && <span className="text-xs text-gray-400">Saving...</span>}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(issue.createdAt).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <button
+                        onClick={() => navigate(`/issue/${issue._id}`)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 text-primary-600 hover:bg-primary-100 transition text-sm font-medium"
+                        title="View full details"
+                      >
+                        <Eye className="h-4 w-4" />
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
+
           </table>
         </div>
       </Card>
